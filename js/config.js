@@ -1,4 +1,4 @@
-const DEFAULT_API = 'https://yusbo-backend-us.vercel.app';
+const DEFAULT_API = '';
 
 export const API_BASE = (window.YUSBO_API_BASE || DEFAULT_API).replace(/\/+$/, '');
 
