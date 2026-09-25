@@ -5,6 +5,14 @@
   "framework": null,
   "rewrites": [
     {
+      "source": "/publicaciones",
+      "destination": "/html/feed.html"
+    },
+    {
+      "source": "/feed",
+      "destination": "/html/feed.html"
+    },
+    {
       "source": "/js/(.*)",
       "destination": "/js/$1"
     },
