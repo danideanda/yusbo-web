@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tu perfil en YUSBO — foto, bio y publicaciones.">
+    <title>Mi perfil — YUSBO</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://yusbo.vercel.app/perfil">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Mi perfil — YUSBO">
+    <meta property="og:description" content="Tu perfil en YUSBO — foto, bio y publicaciones.">
+    <meta property="og:url" content="https://yusbo.vercel.app/perfil">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mi perfil — YUSBO">
+    <meta name="twitter:description" content="Tu perfil en YUSBO — foto, bio y publicaciones.">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/app.css?v=6">
+    <link rel="stylesheet" href="css/user.css">
+    <link rel="stylesheet" href="css/posts.css?v=1">
+    <link rel="stylesheet" href="css/bottom.css">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-login">Iniciar sesión</a>
+            <a id="nav-user-btn" href="/user" class="btn btn-primary" style="display: none;">Mi panel</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main class="user-main">
+        <section class="section user-header">
+            <div class="profile-avatar" id="profile-avatar"></div>
+            <h1 id="profile-name">—</h1>
+            <p class="lead" id="profile-email"></p>
+            <p class="desc profile-bio" id="profile-bio">Sin biografía todavía.</p>
+            <p class="profile-meta" id="profile-meta"></p>
+
+            <button class="btn btn-outline" id="profile-edit-toggle">Editar perfil</button>
+
+            <form class="post-form profile-edit" id="profile-form" novalidate style="display: none;">
+                <div class="form-group full">
+                    <label for="profile-photo">Foto de perfil (URL)</label>
+                    <input type="url" id="profile-photo" name="photo" maxlength="500" placeholder="https://imagen.ejemplo/foto.jpg">
+                </div>
+                <div class="form-group full">
+                    <label for="profile-bio">Biografía</label>
+                    <textarea id="profile-bio-input" name="bio" maxlength="300" rows="3" placeholder="Cuéntale a la comunidad quién eres y qué haces…"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Guardar perfil</button>
+                <p class="posts-status" id="profile-status" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <section class="section">
+            <h2>Mis publicaciones</h2>
+            <div class="posts-grid" id="profile-posts"></div>
+            <div id="profile-posts-empty" class="empty-state" style="display: none;">
+                <h3>Aún no has publicado</h3>
+                <p>Publica tu primer anuncio desde el panel o la página de publicaciones.</p>
+                <a href="/publicaciones" class="btn btn-outline">Ir a publicaciones</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <a href="/info#inicio" class="logo">
+                    <img src="img/YUSBO-logo.png" alt="YUSBO">
+                </a>
+                <p>creado por <a href="https://danideanda.vercel.app">daniel de anda</a></p>
+                <p class="copy">© 2026 YUSBO · Del campo, para el campo.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Soporte</h3>
+                <a href="/soporte">Soporte</a>
+                <a href="/info#faq">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Cuenta</h3>
+                <a href="/user">Mi panel</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="/terminos">Términos y condiciones</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+import '/js/cookies.js';
+        import { initSessionCheck } from '/js/session.js';
+        import { initBottomNav } from '/js/bottom.js';
+        import { initPerfilPage } from '/js/perfil.js';
+
+        async function initPage() {
+            const session = await initSessionCheck();
+            initBottomNav(session.authenticated);
+            if (!session.authenticated) {
+                window.location.href = '/login';
+                return;
+            }
+            initPerfilPage();
+        }
+        initPage();
+    </script>
+</body>
+</html>

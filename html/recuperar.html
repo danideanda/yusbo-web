@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Recuperar contraseña — YUSBO">
+    <title>Recuperar contraseña — YUSBO</title>
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="https://yusbo.vercel.app/recuperar">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Recuperar contraseña — YUSBO">
+    <meta property="og:description" content="Recuperar contraseña — YUSBO">
+    <meta property="og:url" content="https://yusbo.vercel.app/recuperar">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Recuperar contraseña — YUSBO">
+    <meta name="twitter:description" content="Recuperar contraseña — YUSBO">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/auth.css?v=5">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-login">Iniciar sesión</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main class="auth-main">
+        <section class="auth-hero">
+            <h1>YUS<span>BO</span></h1>
+            <p class="lead">Recuperar contraseña</p>
+            <p class="desc">
+                Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+            </p>
+        </section>
+
+        <section class="auth-section">
+            <div class="auth-card">
+                <form class="auth-form active" id="recover-form" novalidate>
+                    <div class="form-group">
+                        <label for="recover-email">Correo electrónico</label>
+                        <input type="email" id="recover-email" name="email" autocomplete="email" required placeholder="tu@correo.com">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Enviar enlace</button>
+                    <p class="form-note"><a href="/login">← Volver al inicio de sesión</a></p>
+                </form>
+
+                <p class="auth-status" id="recover-status" aria-live="polite"></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <a href="/info#inicio" class="logo">
+                    <img src="img/YUSBO-logo.png" alt="YUSBO">
+                </a>
+                <p>creado por <a href="https://danideanda.vercel.app">daniel de anda</a></p>
+                <p class="copy">© 2026 YUSBO · Del campo, para el campo.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Soporte</h3>
+                <a href="/soporte">Soporte</a>
+                <a href="/info#faq">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Cuenta</h3>
+                <a href="/login">Iniciar sesión</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="/terminos">Términos y condiciones</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+import '/js/cookies.js';
+        import { initSessionCheck } from '/js/session.js';
+        import '/js/recover.js';
+        initSessionCheck();
+    </script>
+</body>
+</html>

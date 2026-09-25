@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tu panel en YUSBO — Publica, explora, negocia y gestiona tu ganado.">
+    <title>Panel — YUSBO</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://yusbo.vercel.app/user/{id}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Panel — YUSBO">
+    <meta property="og:description" content="Tu panel en YUSBO — Publica, explora, negocia y gestiona tu ganado.">
+    <meta property="og:url" content="https://yusbo.vercel.app/user/{id}">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Panel — YUSBO">
+    <meta name="twitter:description" content="Tu panel en YUSBO — Publica, explora, negocia y gestiona tu ganado.">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/app.css?v=4">
+    <link rel="stylesheet" href="css/user.css">
+    <link rel="stylesheet" href="css/posts.css?v=1">
+    <link rel="stylesheet" href="css/bottom.css">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-login">Iniciar sesión</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main class="user-main">
+        <section class="section user-header">
+            <h1>YUS<span>BO</span></h1>
+            <p class="lead">Tu panel</p>
+            <p class="desc">Bienvenido, <strong id="user-name-display"></strong>. Aquí verás las publicaciones recomendadas para ti.</p>
+
+            <div class="user-actions">
+                <a href="/publicar" class="btn btn-primary">Nueva publicación</a>
+                <a href="/publicaciones" class="btn btn-outline">Muro</a>
+                <a href="/dm" class="btn btn-outline">Mensajes directos</a>
+                <a href="/mensajes" class="btn btn-outline">Sistema</a>
+                <a href="/configuracion" class="btn btn-outline">Configuración</a>
+            </div>
+        </section>
+
+        <section class="section rec-section">
+            <h2>Recomendado para ti</h2>
+            <p class="section-desc">Publicaciones seleccionadas por el algoritmo de YUSBO según tus intereses.</p>
+
+            <div class="posts-grid" id="rec-posts"></div>
+
+            <div id="rec-loading" class="empty-state">
+                <p>Cargando recomendaciones...</p>
+            </div>
+
+            <div id="rec-empty" class="empty-state" style="display: none;">
+                <h3>Sé el primero en publicar aquí</h3>
+                <p>Todavía no hay publicaciones en YUSBO. Comparte lo que ofreces o buscas: ganado, maíz, herramientas y más.</p>
+                <a href="/publicar" class="btn btn-primary">Ir a publicar</a>
+            </div>
+
+            <div id="rec-error" class="empty-state" style="display: none;">
+                <h3>No se pudieron cargar las recomendaciones</h3>
+                <p id="rec-error-msg"></p>
+                <button class="btn btn-outline" onclick="window.location.reload()">Reintentar</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <a href="/info#inicio" class="logo">
+                    <img src="img/YUSBO-logo.png" alt="YUSBO">
+                </a>
+                <p>creado por <a href="https://danideanda.vercel.app">daniel de anda</a></p>
+                <p class="copy">© 2026 YUSBO · Del campo, para el campo.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Soporte</h3>
+                <a href="/soporte">Soporte</a>
+                <a href="/info#faq">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Cuenta</h3>
+                <a href="/login">Iniciar sesión</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="/terminos">Términos y condiciones</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+import '/js/cookies.js';
+        import { initSessionCheck } from '/js/session.js';
+        import { loadRecommendations } from '/js/recomendaciones.js';
+        import { initBottomNav } from '/js/bottom.js';
+
+        async function initUserPage() {
+            const session = await initSessionCheck();
+            initBottomNav(session.authenticated);
+            if (session.authenticated && session.user) {
+                document.getElementById('user-name-display').textContent = session.user.name;
+                loadRecommendations();
+            } else {
+                window.location.href = '/login';
+            }
+        }
+        initUserPage();
+    </script>
+</body>
+</html>

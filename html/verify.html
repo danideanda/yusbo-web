@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Verifica tu correo en YUSBO">
+    <title>Verificar correo — YUSBO</title>
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="https://yusbo.vercel.app/verify">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Verificar correo — YUSBO">
+    <meta property="og:description" content="Verifica tu correo en YUSBO">
+    <meta property="og:url" content="https://yusbo.vercel.app/verify">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Verificar correo — YUSBO">
+    <meta name="twitter:description" content="Verifica tu correo en YUSBO">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/auth.css?v=6">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-login">Iniciar sesión</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main class="auth-main">
+        <div class="auth-split">
+            <section class="auth-left" aria-labelledby="verify-title">
+                <div class="auth-left-content">
+                    <h2 id="verify-title" class="brand-title">Casi<br><span>estás dentro</span></h2>
+                    <p class="brand-lead">Un último paso</p>
+                    <p class="brand-desc">
+                        Te enviamos un código de 6 dígitos a tu correo. Confírmalo para publicar y
+                        operar en YUSBO con total seguridad.
+                    </p>
+                </div>
+            </section>
+
+            <section class="auth-right" aria-labelledby="form-title">
+                <div class="auth-card">
+                    <h2 id="form-title" class="form-title">Verifica tu correo</h2>
+
+                    <p class="form-note" id="verify-hint">Enviamos el código a <strong id="verify-email">tu correo</strong>.</p>
+
+                    <div id="verify-mail-notice"></div>
+
+                    <form class="auth-form active" id="verify-form" role="tabpanel" novalidate>
+                        <div class="form-group">
+                            <label for="verify-code">Código de verificación</label>
+                            <input type="text" id="verify-code" name="code" inputmode="numeric" autocomplete="one-time-code" required maxlength="6" placeholder="••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Verificar</button>
+                        <p class="form-note">¿No llegó? <a href="#" id="verify-resend">Reenviar código</a></p>
+                    </form>
+
+                    <p class="auth-status" id="verify-status" aria-live="polite"></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script type="module">
+import '/js/cookies.js';
+        import { initSessionCheck, updateLoginButton } from '/js/session.js';
+        import { initVerifyPage } from '/js/verify.js?v=2';
+
+        initSessionCheck().then((session) => {
+            updateLoginButton(session.authenticated, session.user?.name || '');
+            initVerifyPage(session);
+        });
+    </script>
+</body>
+</html>

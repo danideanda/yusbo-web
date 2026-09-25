@@ -1,0 +1,97 @@
+@import "app.css";
+
+.page-hero {
+    min-height: 60vh;
+    padding-top: 6rem;
+}
+
+.page-hero .seal {
+    width: 128px;
+    height: 128px;
+    margin-bottom: 1.4rem;
+}
+
+.page-hero h1 {
+    font-size: clamp(3rem, 8vw, 5rem);
+    letter-spacing: 2px;
+    margin-top: 1rem;
+}
+
+.page-hero .lead {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    letter-spacing: 1px;
+    color: var(--castano);
+    margin-top: -0.6rem;
+}
+
+.page-hero .desc {
+    max-width: 640px;
+    margin: 1.6rem auto 0;
+    color: #4a4a4a;
+    font-size: 1rem;
+}
+
+.page-section {
+    padding: 4rem 1.5rem;
+}
+
+.page-section .section-tag {
+    font-size: .8rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dorado);
+    margin-bottom: .4rem;
+}
+
+.page-section h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    margin: .4rem 0 1rem;
+}
+
+.page-section .section-desc {
+    max-width: 620px;
+    margin: 0 auto 2.6rem;
+    color: #4a4a4a;
+    text-align: center;
+}
+
+.content-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--gris);
+    border-left: 5px solid var(--caramelo);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 6px 20px rgba(43, 39, 39, .06);
+    text-align: center;
+}
+
+.content-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--castano);
+}
+
+.content-card p {
+    font-size: .95rem;
+    color: #4a4a4a;
+    margin-bottom: 1.5rem;
+}
+
+.content-card .btn {
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+@media (max-width: 600px) {
+    .page-hero {
+        min-height: 50vh;
+        padding-top: 4rem;
+    }
+    .content-card {
+        padding: 1.5rem;
+    }
+}

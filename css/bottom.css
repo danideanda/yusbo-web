@@ -1,0 +1,129 @@
+/* ============ Barra de navegación inferior ============ */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 10px 4vw calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(243, 239, 234, .94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-top: 2px solid var(--gris);
+}
+
+body.has-bottom-nav {
+    padding-bottom: 92px;
+}
+
+.bn-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 6px;
+    min-width: 66px;
+    border-radius: 12px;
+    transition: transform .2s ease, color .2s ease;
+    color: var(--carbon);
+}
+
+.bn-item:hover {
+    transform: translateY(-2px);
+    color: var(--dorado);
+}
+
+.bn-item .bn-icon {
+    display: grid;
+    place-items: center;
+    color: inherit;
+}
+
+.bn-item .bn-icon svg {
+    width: 25px;
+    height: 25px;
+    display: block;
+}
+
+.bn-item .bn-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: .72rem;
+    letter-spacing: .8px;
+    color: var(--carbon);
+    opacity: .75;
+    text-transform: uppercase;
+}
+
+.bn-item.active .bn-label {
+    color: var(--dorado);
+    opacity: 1;
+}
+
+.bn-item.active .bn-icon {
+    color: var(--caramelo);
+}
+
+.bn-item.bn-central {
+    margin-top: -26px;
+}
+
+.bn-central .bn-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--dorado), var(--caramelo));
+    color: #fff;
+    border: 4px solid var(--crema);
+    box-shadow: 0 8px 20px rgba(200, 116, 40, .4);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.bn-central:hover .bn-icon {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(200, 116, 40, .5);
+}
+
+.bn-central .bn-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.bn-central.active .bn-icon {
+    outline: 2px solid var(--dorado);
+    outline-offset: 2px;
+}
+
+.bn-badge {
+    position: absolute;
+    top: 6px;
+    right: 14px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--dorado);
+    color: #fff;
+    font-size: .68rem;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+}
+
+@media (max-width: 480px) {
+    .bottom-nav {
+        gap: 1.2rem;
+    }
+    .bn-item {
+        min-width: 58px;
+    }
+    .bn-label {
+        font-size: .66rem;
+    }
+    body.has-bottom-nav {
+        padding-bottom: 86px;
+    }
+}

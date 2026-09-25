@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mensajes directos en YUSBO — Conversaciones privadas cifradas de extremo a extremo.">
+    <title>Mensajes directos — YUSBO</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://yusbo.vercel.app/dm">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Mensajes directos — YUSBO">
+    <meta property="og:description" content="Conversaciones privadas cifradas de extremo a extremo.">
+    <meta property="og:url" content="https://yusbo.vercel.app/dm">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mensajes directos — YUSBO">
+    <meta name="twitter:description" content="Conversaciones privadas cifradas de extremo a extremo.">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/app.css?v=4">
+    <link rel="stylesheet" href="css/user.css">
+    <link rel="stylesheet" href="css/bottom.css">
+    <link rel="stylesheet" href="css/dm.css?v=1">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-login">Iniciar sesión</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main class="user-main dm-main">
+        <section class="section dm-header">
+            <h1>YUS<span>BO</span></h1>
+            <p class="lead">Mensajes directos</p>
+            <p class="desc">Conversaciones privadas <strong>cifradas de extremo a extremo</strong>. Solo tú y tu interlocutor pueden leer los mensajes.</p>
+        </section>
+
+        <section class="section dm-container">
+            <!-- Lista de conversaciones (sidebar) -->
+            <aside class="dm-sidebar" id="dm-sidebar" aria-label="Lista de conversaciones">
+                <div class="dm-sidebar-header">
+                    <h2>Conversaciones</h2>
+                    <button type="button" class="btn btn-outline btn-sm" id="dm-new-conv-btn" aria-label="Nueva conversación">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                        <span>Nueva</span>
+                    </button>
+                </div>
+
+                <div class="dm-conv-list" id="dm-conv-list" role="list">
+                    <div class="dm-loading" id="dm-loading">
+                        <div class="spinner"></div>
+                        <span>Cargando...</span>
+                    </div>
+                    <div class="dm-empty" id="dm-empty" style="display: none;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" width="48" height="48">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <h3>Sin conversaciones</h3>
+                        <p>Inicia una conversación privada con otro usuario.</p>
+                        <button type="button" class="btn btn-primary" id="dm-empty-new-btn">Nueva conversación</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Vista de chat -->
+            <article class="dm-chat" id="dm-chat" aria-label="Chat">
+                <div class="dm-chat-empty" id="dm-chat-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" width="64" height="64">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <h2>Selecciona una conversación</h2>
+                    <p>Elige una conversación de la lista o inicia una nueva.</p>
+                </div>
+
+                <div class="dm-chat-active" id="dm-chat-active" style="display: none;">
+                    <header class="dm-chat-header">
+                        <div class="dm-chat-avatar" id="dm-chat-avatar"></div>
+                        <div class="dm-chat-info">
+                            <h3 id="dm-chat-name"></h3>
+                            <span class="dm-chat-status" id="dm-chat-status">Cifrado de extremo a extremo</span>
+                        </div>
+                    </header>
+
+                    <div class="dm-messages" id="dm-messages" role="log" aria-live="polite" aria-label="Mensajes">
+                        <div class="dm-messages-loading" id="dm-messages-loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+
+                    <form class="dm-input-form" id="dm-input-form" novalidate>
+                        <div class="dm-input-wrapper">
+                            <input type="text" id="dm-input" placeholder="Escribe un mensaje..." autocomplete="off" aria-label="Mensaje" required maxlength="4000">
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="dm-send-btn" aria-label="Enviar mensaje">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="20" height="20">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <a href="/info#inicio" class="logo">
+                    <img src="img/YUSBO-logo.png" alt="YUSBO">
+                </a>
+                <p>creado por <a href="https://danideanda.vercel.app">daniel de anda</a></p>
+                <p class="copy">© 2026 YUSBO · Del campo, para el campo.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Soporte</h3>
+                <a href="/soporte">Soporte</a>
+                <a href="/info#faq">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Cuenta</h3>
+                <a href="/user">Mi panel</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="/terminos">Términos y condiciones</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para nueva conversación -->
+    <div class="dm-modal-overlay" id="dm-new-conv-modal" role="dialog" aria-modal="true" aria-labelledby="dm-modal-title" style="display: none;">
+        <div class="dm-modal">
+            <header class="dm-modal-header">
+                <h2 id="dm-modal-title">Nueva conversación</h2>
+                <button type="button" class="dm-modal-close" id="dm-modal-close" aria-label="Cerrar">&times;</button>
+            </header>
+            <form class="dm-modal-form" id="dm-modal-form" novalidate>
+                <div class="form-group">
+                    <label for="dm-modal-email">Email del usuario</label>
+                    <input type="email" id="dm-modal-email" name="email" required placeholder="usuario@ejemplo.com" autocomplete="email" aria-describedby="dm-modal-email-hint">
+                    <p id="dm-modal-email-hint" class="form-hint">El usuario debe tener cuenta en YUSBO</p>
+                </div>
+                <p class="dm-modal-status" id="dm-modal-status" aria-live="polite" style="display: none;"></p>
+                <div class="dm-modal-actions">
+                    <button type="button" class="btn btn-outline" id="dm-modal-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="dm-modal-submit">Iniciar conversación</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+import '/js/cookies.js';
+        import { initSessionCheck } from '/js/session.js';
+        import { initBottomNav } from '/js/bottom.js';
+        import { initDMPage } from '/js/dm.js';
+
+        async function initPage() {
+            const session = await initSessionCheck();
+            initBottomNav(session.authenticated);
+            if (!session.authenticated) {
+                window.location.href = '/login';
+                return;
+            }
+            await initDMPage();
+        }
+        initPage();
+    </script>
+</body>
+</html>

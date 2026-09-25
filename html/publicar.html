@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Publica en YUSBO — fotos, videos, ganado, maíz y herramientas.">
+    <title>Nueva publicación — YUSBO</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://yusbo.vercel.app/publicar">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Nueva publicación — YUSBO">
+    <meta property="og:description" content="Publica en YUSBO — fotos, videos, ganado, maíz y herramientas.">
+    <meta property="og:url" content="https://yusbo.vercel.app/publicar">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nueva publicación — YUSBO">
+    <meta name="twitter:description" content="Publica en YUSBO — fotos, videos, ganado, maíz y herramientas.">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/app.css?v=5">
+    <link rel="stylesheet" href="css/posts.css?v=2">
+    <link rel="stylesheet" href="css/bottom.css">
+</head>
+<body>
+
+    <nav class="nav">
+        <button class="nav-burger" id="nav-burger" aria-label="Abrir menú" aria-expanded="false" title="Menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-links">
+            <a href="/info#inicio">inicio</a>
+            <a href="/publicaciones">publicaciones</a>
+            <a href="/info#servicios">servicios</a>
+            <a href="/info#faq">FAQ</a>
+            <a href="/info#soporte">soporte</a>
+        </div>
+
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-login">Iniciar sesión</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section posts-section">
+            <div class="posts-header">
+                <h1>Nueva publicación</h1>
+                <p class="lead">Comparte con la comunidad.</p>
+                <p class="desc">
+                    Publica lo que ofreces o buscas: ganado, maíz, herramientas y más.
+                    Las fotos se comprimen y se les quitan los metadatos antes de guardarse.
+                </p>
+            </div>
+
+            <div class="post-form-card">
+                <form class="post-form" id="post-form" novalidate>
+                    <div class="form-group">
+                        <label for="post-title">Título</label>
+                        <input type="text" id="post-title" name="title" required maxlength="80" placeholder="Ej. Vendo novillos de 300 kg">
+                    </div>
+                    <div class="form-group">
+                        <label for="post-category">Categoría</label>
+                        <select id="post-category" name="category">
+                            <option value="ganado">Ganado</option>
+                            <option value="maiz">Maíz y cultivos</option>
+                            <option value="herramientas">Herramientas</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-price">Precio (opcional)</label>
+                        <input type="text" id="post-price" name="price" maxlength="20" placeholder="Ej. 8500">
+                    </div>
+                    <div class="form-group">
+                        <label for="post-location">Zona / ubicación</label>
+                        <input type="text" id="post-location" name="location" maxlength="120" placeholder="Ej. Rancho El Caporal, Valles">
+                    </div>
+                    <div class="form-group full">
+                        <label for="post-description">Descripción</label>
+                        <textarea id="post-description" name="description" required minlength="10" maxlength="2000" placeholder="Detalla qué vendes o buscas: raza, peso, estado de salud, precio negociable, etc."></textarea>
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="media-files">Fotos o videos (hasta 10, máx. 15 MB cada uno)</label>
+                        <input type="file" id="media-files" accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/quicktime,video/webm" multiple>
+                        <p class="form-hint">Las imágenes se comprimen y se les eliminan los metadatos. Los videos se guardan tal cual.</p>
+                        <div class="media-preview" id="media-preview"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Publicar</button>
+                    <p class="posts-status" id="post-status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <a href="/info#inicio" class="logo">
+                    <img src="img/YUSBO-logo.png" alt="YUSBO">
+                </a>
+                <p>creado por <a href="https://danideanda.vercel.app">daniel de anda</a></p>
+                <p class="copy">© 2026 YUSBO · Del campo, para el campo.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Soporte</h3>
+                <a href="/soporte">Soporte</a>
+                <a href="/info#faq">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Explora</h3>
+                <a href="/publicaciones">Publicaciones</a>
+                <a href="/user">Mi panel</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="/terminos">Términos y condiciones</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+    import '/js/cookies.js';
+import { initSessionCheck, updateLoginButton } from '/js/session.js';
+        import { initBottomNav } from '/js/bottom.js';
+        import '/js/publicar.js';
+
+        initSessionCheck().then((session) => {
+            updateLoginButton(session.authenticated, session.user?.name || '');
+            initBottomNav(session.authenticated);
+            if (!session.authenticated) {
+                window.location.href = '/login';
+            }
+        });
+    </script>
+</body>
+</html>

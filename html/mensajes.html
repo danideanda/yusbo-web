@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mensajes del sistema y contacto con el equipo de YUSBO.">
+    <title>Mensajes — YUSBO</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://yusbo.vercel.app/mensajes">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Mensajes — YUSBO">
+    <meta property="og:description" content="Mensajes del sistema y contacto con el equipo de YUSBO.">
+    <meta property="og:url" content="https://yusbo.vercel.app/mensajes">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mensajes — YUSBO">
+    <meta name="twitter:description" content="Mensajes del sistema y contacto con el equipo de YUSBO.">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/app.css?v=5">
+    <link rel="stylesheet" href="css/user.css">
+    <link rel="stylesheet" href="css/bottom.css">
+    <link rel="stylesheet" href="css/posts.css?v=1">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-login">Iniciar sesión</a>
+            <a id="nav-user-btn" href="/user" class="btn btn-primary" style="display: none;">Mi panel</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main class="user-main">
+        <section class="section user-header">
+            <h1>Mensajes</h1>
+            <p class="lead">Sistema y contacto</p>
+            <p class="desc">Estas son las novedades de YUSBO y el canal para escribirnos.</p>
+
+            <div class="user-actions" style="margin-bottom: 2rem;">
+                <a href="/dm" class="btn btn-primary">Mensajes directos (E2E)</a>
+            </div>
+
+            <div class="grid user-grid">
+                <div class="card">
+                    <span class="num">1</span>
+                    <h3>Mensajes del sistema</h3>
+                    <p>Noticias, confirmaciones y avisos de tu actividad en YUSBO.</p>
+                    <div class="msg-list" id="msg-list">
+                        <div id="msg-empty">No tienes mensajes todavía.</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="num">2</span>
+                    <h3>Contactar equipo</h3>
+                    <p>Cuéntanos tu consulta o problema. Te responderemos por correo.</p>
+                    <form class="post-form" id="contact-form" novalidate>
+                        <div class="form-group">
+                            <label for="contact-subject">Asunto</label>
+                            <input type="text" id="contact-subject" name="subject" required maxlength="80" placeholder="Ej. Dudas sobre una publicación">
+                        </div>
+                        <div class="form-group full">
+                            <label for="contact-message">Mensaje</label>
+                            <textarea id="contact-message" name="message" required minlength="10" maxlength="2000" placeholder="Escribe tu consulta…"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Enviar mensaje</button>
+                        <p class="posts-status" id="contact-status" aria-live="polite"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <a href="/info#inicio" class="logo">
+                    <img src="img/YUSBO-logo.png" alt="YUSBO">
+                </a>
+                <p>creado por <a href="https://danideanda.vercel.app">daniel de anda</a></p>
+                <p class="copy">© 2026 YUSBO · Del campo, para el campo.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Soporte</h3>
+                <a href="/soporte">Soporte</a>
+                <a href="/info#faq">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Cuenta</h3>
+                <a href="/user">Mi panel</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="/terminos">Términos y condiciones</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+import '/js/cookies.js';
+        import { initSessionCheck, updateLoginButton } from '/js/session.js';
+        import { initBottomNav } from '/js/bottom.js';
+        import { initMessagesPage } from '/js/mensajes.js';
+
+        async function initPage() {
+            const session = await initSessionCheck();
+            initBottomNav(session.authenticated);
+            if (!session.authenticated) {
+                window.location.href = '/login';
+                return;
+            }
+            initMessagesPage();
+        }
+        initPage();
+    </script>
+</body>
+</html>

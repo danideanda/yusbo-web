@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Publicaciones en YUSBO — Compra y vende ganado, maíz y más.">
+    <title>Publicaciones — YUSBO</title>
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://yusbo.vercel.app/publicaciones">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Publicaciones — YUSBO">
+    <meta property="og:description" content="Publicaciones en YUSBO — Compra y vende ganado, maíz y más.">
+    <meta property="og:url" content="https://yusbo.vercel.app/publicaciones">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Publicaciones — YUSBO">
+    <meta name="twitter:description" content="Publicaciones en YUSBO — Compra y vende ganado, maíz y más.">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/app.css?v=5">
+    <link rel="stylesheet" href="css/posts.css?v=1">
+    <link rel="stylesheet" href="css/bottom.css">
+</head>
+<body>
+
+    <nav class="nav">
+        <button class="nav-burger" id="nav-burger" aria-label="Abrir menú" aria-expanded="false" title="Menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-links">
+            <a href="/info#inicio">inicio</a>
+            <a href="/publicaciones">publicaciones</a>
+            <a href="/info#servicios">servicios</a>
+            <a href="/info#faq">FAQ</a>
+            <a href="/info#soporte">soporte</a>
+        </div>
+
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-primary">Iniciar sesión</a>
+            <a id="nav-user-btn" href="/user" class="btn btn-primary" style="display: none;">Mi panel</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section posts-section">
+            <div class="posts-header">
+                <h1>Publicaciones</h1>
+                <p class="lead">Del campo, para el campo.</p>
+                <p class="desc">
+                    Explora lo que la comunidad ofrece. Encuentra exactamente lo que buscas y contacta
+                    al publicador en persona.
+                </p>
+            </div>
+
+            <div class="post-form-card">
+                <h2>Publica en YUSBO</h2>
+                <p class="section-desc">
+                    ¿Ofreces o buscas ganado, maíz, herramientas y más? Crea tu publicación
+                    con fotos o videos en la página de publicar.
+                </p>
+                <a class="btn btn-primary btn-block" href="/publicar">Publicar ahora</a>
+            </div>
+
+            <div class="posts-grid" id="feed-posts"></div>
+
+            <div id="feed-status" class="empty-state" style="display: none;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <a href="/info#inicio" class="logo">
+                    <img src="img/YUSBO-logo.png" alt="YUSBO">
+                </a>
+                <p>creado por <a href="https://danideanda.vercel.app">daniel de anda</a></p>
+                <p class="copy">© 2026 YUSBO · Del campo, para el campo.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Soporte</h3>
+                <a href="/soporte">Soporte</a>
+                <a href="/info#faq">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Explora</h3>
+                <a href="/publicaciones">Publicaciones</a>
+                <a href="/user">Mi panel</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="/terminos">Términos y condiciones</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+import '/js/cookies.js';
+        import { initSessionCheck, updateLoginButton } from '/js/session.js';
+        import { loadFeed } from '/js/posts.js';
+        import { initBottomNav } from '/js/bottom.js';
+
+        initSessionCheck().then((session) => {
+            updateLoginButton(session.authenticated, session.user?.name || '');
+            initBottomNav(session.authenticated);
+        });
+        loadFeed();
+    </script>
+</body>
+</html>

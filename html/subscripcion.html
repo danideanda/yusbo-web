@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Suscríbete a YUSBO Premium — Accede a herramientas avanzadas, IA y sin anuncios.">
+    <title>Suscripción Premium — YUSBO</title>
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://yusbo.vercel.app/subscripcion">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUSBO">
+    <meta property="og:title" content="Suscripción Premium — YUSBO">
+    <meta property="og:description" content="Suscríbete a YUSBO Premium — Accede a herramientas avanzadas, IA y sin anuncios.">
+    <meta property="og:url" content="https://yusbo.vercel.app/subscripcion">
+    <meta property="og:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Suscripción Premium — YUSBO">
+    <meta name="twitter:description" content="Suscríbete a YUSBO Premium — Accede a herramientas avanzadas, IA y sin anuncios.">
+    <meta name="twitter:image" content="https://yusbo.vercel.app/img/YUSBO-og.png">
+    <link rel="sitemap" type="application/xml" href="https://yusbo.vercel.app/sitemap-index.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
+    <base href="/">
+    <link rel="stylesheet" href="css/app.css?v=4">
+    <link rel="stylesheet" href="css/page.css">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-actions">
+            <span id="nav-user-greeting" class="user-greeting" style="display: none;"></span>
+            <a id="nav-login-btn" href="/login" class="btn btn-login">Iniciar sesión</a>
+            <a id="nav-profile-btn" href="/perfil" class="nav-profile" aria-label="Mi perfil" title="Mi perfil" style="display: none;"></a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero page-hero">
+            <h1>Premium</h1>
+            <p class="lead">Lleva tu negocio al siguiente nivel</p>
+            <p class="desc">
+                Accede al kit de herramientas, IA avanzada, gestión de ganado
+                y experiencia sin anuncios.
+            </p>
+        </section>
+
+        <section class="section page-section">
+            <span class="section-tag">Subscripción</span>
+            <h2>Planes disponibles</h2>
+            <p class="section-desc">
+                Elige el plan que mejor se adapte a tu forma de trabajar.
+            </p>
+
+            <div class="plan">
+                <div class="plan-card gratis">
+                    <h3>Plan Gratis</h3>
+                    <ul>
+                        <li class="si">Acceso a la red social</li>
+                        <li class="si">Hablar por mensajes directos</li>
+                        <li class="si">Publicar y explorar</li>
+                        <li class="si">Usar IA básica</li>
+                        <li class="no">Sin anuncios</li>
+                        <li class="no">Kit de herramientas</li>
+                        <li class="no">Sistema de gestión</li>
+                    </ul>
+                    <a href="/login" class="btn btn-outline">Empezar gratis</a>
+                </div>
+
+                <div class="plan-card premium">
+                    <h3>Plan Premium</h3>
+                    <ul>
+                        <li class="si">Acceso a la red social</li>
+                        <li class="si">Hablar por mensajes directos</li>
+                        <li class="si">Publicar y explorar</li>
+                        <li class="si">Usar IA básica</li>
+                        <li class="si">Sin anuncios</li>
+                        <li class="si">Kit de herramientas</li>
+                        <li class="si">Sistema de gestión</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;" disabled>Próximamente</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <a href="/info#inicio" class="logo">
+                    <img src="img/YUSBO-logo.png" alt="YUSBO">
+                </a>
+                <p>creado por <a href="https://danideanda.vercel.app">daniel de anda</a></p>
+                <p class="copy">© 2026 YUSBO · Del campo, para el campo.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Soporte</h3>
+                <a href="/soporte">Soporte</a>
+                <a href="/info#faq">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Cuenta</h3>
+                <a href="/login">Iniciar sesión</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <a href="/terminos">Términos y condiciones</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+import '/js/cookies.js';
+        import { initSessionCheck } from '/js/session.js';
+        import { initAuthModal, protectLinks } from '/js/auth-modal.js';
+        import '/js/page.js';
+        initSessionCheck();
+        initAuthModal();
+        protectLinks('a[href="/login"]', 'Para suscribirte necesitas iniciar sesión.');
+    </script>
+</body>
+</html>
