@@ -1,0 +1,76 @@
+{
+  "buildCommand": "echo 'Static site - no build needed'",
+  "outputDirectory": "public",
+  "devCommand": "python -m http.server 8123",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/js/(.*)",
+      "destination": "/js/$1"
+    },
+    {
+      "source": "/css/(.*)",
+      "destination": "/css/$1"
+    },
+    {
+      "source": "/img/(.*)",
+      "destination": "/img/$1"
+    },
+    {
+      "source": "/fails/(.*)",
+      "destination": "/fails/$1"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap-index.xml"
+    },
+    {
+      "source": "/sitemap-index.xml",
+      "destination": "/sitemap-index.xml"
+    },
+    {
+      "source": "/sitemap-0.xml",
+      "destination": "/sitemap-0.xml"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/html/$1"
+    },
+    {
+      "source": "/",
+      "destination": "/html/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/js/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/css/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/img/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}
