@@ -1,9 +1,18 @@
 {
-  "buildCommand": "echo 'Static site - no build needed'",
-  "outputDirectory": "public",
-  "devCommand": "python -m http.server 8123",
-  "framework": null,
+  "outputDirectory": ".",
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://yusbo-backend-us.vercel.app/api/$1"
+    },
+    {
+      "source": "/auth/(.*)",
+      "destination": "https://yusbo-backend-us.vercel.app/auth/$1"
+    },
+    {
+      "source": "/publicaciones/:id",
+      "destination": "/html/publicacion.html"
+    },
     {
       "source": "/publicaciones",
       "destination": "/html/feed.html"
@@ -13,44 +22,72 @@
       "destination": "/html/feed.html"
     },
     {
-      "source": "/js/(.*)",
-      "destination": "/js/$1"
+      "source": "/login",
+      "destination": "/html/login.html"
     },
     {
-      "source": "/css/(.*)",
-      "destination": "/css/$1"
+      "source": "/recuperar",
+      "destination": "/html/recuperar.html"
     },
     {
-      "source": "/img/(.*)",
-      "destination": "/img/$1"
+      "source": "/verify",
+      "destination": "/html/verify.html"
     },
     {
-      "source": "/fails/(.*)",
-      "destination": "/fails/$1"
+      "source": "/user",
+      "destination": "/html/user.html"
     },
     {
-      "source": "/robots.txt",
-      "destination": "/robots.txt"
+      "source": "/perfil",
+      "destination": "/html/perfil.html"
+    },
+    {
+      "source": "/dm",
+      "destination": "/html/dm.html"
+    },
+    {
+      "source": "/mensajes",
+      "destination": "/html/mensajes.html"
+    },
+    {
+      "source": "/publicar",
+      "destination": "/html/publicar.html"
+    },
+    {
+      "source": "/configuracion",
+      "destination": "/html/configuracion.html"
+    },
+    {
+      "source": "/terminos",
+      "destination": "/html/terminos.html"
+    },
+    {
+      "source": "/soporte",
+      "destination": "/html/soporte.html"
+    },
+    {
+      "source": "/anunciate",
+      "destination": "/html/anunciate.html"
+    },
+    {
+      "source": "/subscripcion",
+      "destination": "/html/subscripcion.html"
+    },
+    {
+      "source": "/publicitar",
+      "destination": "/html/publicitar.html"
+    },
+    {
+      "source": "/info",
+      "destination": "/index.html"
     },
     {
       "source": "/sitemap.xml",
       "destination": "/sitemap-index.xml"
     },
     {
-      "source": "/sitemap-index.xml",
-      "destination": "/sitemap-index.xml"
-    },
-    {
-      "source": "/sitemap-0.xml",
-      "destination": "/sitemap-0.xml"
-    },
-    {
       "source": "/(.*)",
       "destination": "/html/$1"
-    },
-    {
-      "source": "/",
-      "destination": "/html/index.html"
     }
   ],
   "headers": [
