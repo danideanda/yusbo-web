@@ -25,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
     <base href="/">
-    <link rel="stylesheet" href="css/app.css?v=5">
+    <link rel="stylesheet" href="css/app.css?v=7">
     <link rel="stylesheet" href="css/user.css">
     <link rel="stylesheet" href="css/bottom.css">
 </head>
@@ -75,7 +75,7 @@
                     <span class="num">3</span>
                     <h3>Sesión</h3>
                     <p>¿Terminaste? Cierra tu sesión para proteger tu cuenta.</p>
-                    <form action="/api/logout" method="post">
+                    <form action="/api/logout" method="post" id="logout-form">
                         <button type="submit" class="btn btn-danger btn-block">Cerrar sesión</button>
                     </form>
                 </div>
@@ -91,7 +91,7 @@
                     <span class="num">5</span>
                     <h3>Plataforma</h3>
                     <p>Controla las reglas de YUSBO: publicaciones sin sesión y límites para invitados.</p>
-                    <form class="post-form" id="settings-form" novalidate>
+                    <form class="post-form" id="settings-form" novalidate method="post">
                         <div class="form-group">
                             <label for="s-guest-limit">Publicaciones de invitado (máximo)</label>
                             <input type="number" id="s-guest-limit" name="guest_post_limit" min="1" max="100" required>

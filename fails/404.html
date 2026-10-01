@@ -1,13 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 not found</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Página no encontrada — YUSBO</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            background: #12160f;
+            color: #f4f5ef;
+            text-align: center;
+            padding: 24px;
+        }
+        main { max-width: 34rem; }
+        h1 { font-size: clamp(4rem, 18vw, 7rem); margin: 0; color: #b9d16a; }
+        h2 { font-size: 1.4rem; margin: 0 0 0.75rem; }
+        p { color: #a8ad9c; line-height: 1.6; }
+        a {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: 999px;
+            background: #b9d16a;
+            color: #12160f;
+            font-weight: 600;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>404</h1>
-    <h2>not found</h2>
-    <h2>esta pagina no existe</h2>
+    <main>
+        <h1>404</h1>
+        <h2>Esta página no existe</h2>
+        <p>El enlace que seguiste no lleva a ningún lado, o el contenido ya no está disponible.</p>
+        <a href="/">Ir al inicio</a>
+    </main>
 </body>
 </html>

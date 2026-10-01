@@ -2,7 +2,10 @@ import { api, pageUrl, mediaUrl } from '/js/config.js?v=3';
 
 const CATEGORIES = ['ganado', 'maiz', 'herramientas', 'otros'];
 const MAX_MEDIA = 10;
-const MAX_SIZE = 15 * 1024 * 1024;
+// El mismo tope que aplica el backend (MAX_UPLOAD). Con 15 * 1024 * 1024 el
+// cliente dejaba pasar archivos de hasta 728 KB mas de lo que el servidor
+// acepta, y esos llegaban como error 500.
+const MAX_SIZE = 15_000_000;
 
 const media = [];
 

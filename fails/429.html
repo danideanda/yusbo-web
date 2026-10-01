@@ -3,11 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>429 too many requests</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Demasiadas solicitudes — YUSBO</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            background: #12160f;
+            color: #f4f5ef;
+            text-align: center;
+            padding: 24px;
+        }
+        main { max-width: 34rem; }
+        h1 { font-size: clamp(4rem, 18vw, 7rem); margin: 0; color: #b9d16a; }
+        h2 { font-size: 1.4rem; margin: 0 0 0.75rem; }
+        p { color: #a8ad9c; line-height: 1.6; }
+        a {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: 999px;
+            background: #b9d16a;
+            color: #12160f;
+            font-weight: 600;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>429</h1>
-    <h2>too many requests</h2>
-    <h2>estas intentando acceder al id de otra persona</h2>
+    <main>
+        <h1>429</h1>
+        <h2>Demasiadas solicitudes</h2>
+        <p>Estás haciendo demasiadas solicitudes seguidas. Espera un momento y vuelve a intentarlo; si compartes una conexión con más personas, el límite se agota antes.</p>
+        <a href="/">Ir al inicio</a>
+    </main>
 </body>
 </html>

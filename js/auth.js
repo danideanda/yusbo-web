@@ -46,8 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
             showStatus(statusEl, 'Correo electrónico inválido');
             return;
         }
+        // Mismas reglas que login.validate_password en el backend; antes solo
+        // se comprobaba la longitud y el resto se descubria como error 400.
         if (password.length < 12) {
             showStatus(statusEl, 'La contraseña debe tener al menos 12 caracteres');
+            return;
+        }
+        if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+            showStatus(statusEl, 'La contraseña debe incluir mayúscula, minúscula, número y un carácter especial');
             return;
         }
         if (password !== confirm) {

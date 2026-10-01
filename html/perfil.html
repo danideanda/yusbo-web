@@ -25,9 +25,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="img/YUSBO-isotipo.png">
     <base href="/">
-    <link rel="stylesheet" href="css/app.css?v=6">
+    <link rel="stylesheet" href="css/app.css?v=7">
     <link rel="stylesheet" href="css/user.css">
-    <link rel="stylesheet" href="css/posts.css?v=1">
+    <link rel="stylesheet" href="css/posts.css?v=3">
     <link rel="stylesheet" href="css/bottom.css">
 </head>
 <body>
@@ -51,7 +51,7 @@
 
             <button class="btn btn-outline" id="profile-edit-toggle">Editar perfil</button>
 
-            <form class="post-form profile-edit" id="profile-form" novalidate style="display: none;">
+            <form class="post-form profile-edit" id="profile-form" novalidate method="post" style="display: none;">
                 <div class="form-group full">
                     <label for="profile-photo">Foto de perfil (URL)</label>
                     <input type="url" id="profile-photo" name="photo" maxlength="500" placeholder="https://imagen.ejemplo/foto.jpg">

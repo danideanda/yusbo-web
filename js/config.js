@@ -4,6 +4,26 @@ export const API_BASE = (window.YUSBO_API_BASE || DEFAULT_API).replace(/\/+$/, '
 
 let csrfToken = '';
 
+// FastAPI devuelve `detail` como arreglo de objetos en los 422. Sin esto el
+// mensaje llega al usuario como "[object Object]".
+function readableDetail(detail) {
+    if (detail == null || detail === '') return 'Error en la solicitud';
+    if (typeof detail === 'string') return detail;
+    if (Array.isArray(detail)) {
+        const msgs = detail.map((item) => (item && item.msg) ? item.msg : String(item));
+        return msgs.length ? msgs.join('\n') : 'Error en la solicitud';
+    }
+    if (typeof detail === 'object') {
+        if (detail.msg) return String(detail.msg);
+        try {
+            return JSON.stringify(detail);
+        } catch {
+            return 'Error en la solicitud';
+        }
+    }
+    return String(detail);
+}
+
 export function setCsrf(token) {
     if (token) csrfToken = token;
 }
@@ -40,8 +60,9 @@ export async function api(path, options = {}) {
         data = {};
     }
     if (!res.ok) {
-        const err = new Error((data && (data.detail || data.message)) || 'Error en la solicitud');
+        const err = new Error(readableDetail(data && (data.detail || data.message)));
         err.status = res.status;
+        err.detail = data && data.detail;
         throw err;
     }
     return data;

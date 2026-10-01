@@ -15,6 +15,9 @@ export function updateLoginButton(authenticated, userName = '', photo = '') {
     const userGreeting = document.getElementById('nav-user-greeting');
     const logoutForm = document.getElementById('nav-logout-form');
     const profileBtn = document.getElementById('nav-profile-btn');
+    // Declarado en varias paginas con display:none fijo y sin ningun JS que
+    // lo mostrara: el enlace "Mi panel" quedaba invisible siempre.
+    const userBtn = document.getElementById('nav-user-btn');
 
     if (loginBtn) {
         loginBtn.style.display = authenticated ? 'none' : 'inline-block';
@@ -22,6 +25,9 @@ export function updateLoginButton(authenticated, userName = '', photo = '') {
     if (userGreeting) {
         userGreeting.textContent = authenticated ? `Hola, ${userName}` : '';
         userGreeting.style.display = authenticated ? 'inline-block' : 'none';
+    }
+    if (userBtn) {
+        userBtn.style.display = authenticated ? 'inline-block' : 'none';
     }
     if (logoutForm) {
         logoutForm.style.display = authenticated ? 'inline-block' : 'none';

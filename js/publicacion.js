@@ -40,6 +40,18 @@ const page = document.getElementById('post-detail');
 function render(post) {
     document.title = `${post.title} — YUSBO`;
 
+    // El HTML se sirve estatico, asi que canonical y og:url llegan con el
+    // placeholder "{id}" sin sustituir. Se corrigen con la URL real.
+    if (postId) {
+        const canonical = `${location.origin}/publicaciones/${encodeURIComponent(postId)}`;
+        const link = document.querySelector('link[rel="canonical"]');
+        if (link) link.href = canonical;
+        const og = document.querySelector('meta[property="og:url"]');
+        if (og) og.setAttribute('content', canonical);
+        const tw = document.querySelector('meta[name="twitter:url"]');
+        if (tw) tw.setAttribute('content', canonical);
+    }
+
     const head = el('header', 'detail-head');
     const cat = el('span', 'post-cat');
     cat.textContent = CATEGORY_LABELS[post.category] || 'Otros';
@@ -90,15 +102,18 @@ function render(post) {
     desc.innerHTML = `<p>${escapeHtml(post.description)}</p>`;
 
     const footer = el('div', 'detail-actions');
+    let likes = parseInt(post.likes || 0, 10);
     const like = el('button', 'btn btn-like' + (post.liked_by_me ? ' liked' : ''));
     like.type = 'button';
-    like.textContent = `${post.liked_by_me ? 'Me gusta' : 'Me gusta'} · ${post.likes || 0}`;
+    like.textContent = `${post.liked_by_me ? 'Me gusta' : 'Me gusta'} · ${likes}`;
     like.addEventListener('click', async () => {
-        const liked = await toggleLike();
-        if (liked !== null) {
-            like.textContent = `${liked ? 'Me gusta' : 'Me gusta'} · ${post.likes}`;
-            like.classList.toggle('liked', liked);
-        }
+        const result = await toggleLike();
+        if (!result) return;
+        // El servidor devuelve el conteo ya actualizado: se usa ese y no el
+        // valor guardado al abrir la pagina.
+        likes = typeof result.likes === 'number' ? result.likes : likes + (result.liked ? 1 : -1);
+        like.textContent = `${result.liked ? 'Me gusta' : 'Me gusta'} · ${likes}`;
+        like.classList.toggle('liked', result.liked);
     });
     footer.append(like);
 
@@ -116,7 +131,7 @@ async function toggleLike() {
             method: 'POST',
             body: '{}',
         });
-        return !!json.liked;
+        return { liked: !!json.liked, likes: json.likes };
     } catch (err) {
         alert(err.message);
         return null;
@@ -129,7 +144,10 @@ let lastFlush = 0;
 function sendView(seconds) {
     if (!postId || seconds < 1) return;
     try {
-        navigator.sendBeacon(apiUrl(`/api/posts/${postId}/view`), JSON.stringify({ seconds }));
+        // Un string plano llega como text/plain y FastAPI no lo parsea (422).
+        // El Blob lleva el Content-Type correcto para que el tiempo se cuente.
+        const body = new Blob([JSON.stringify({ seconds })], { type: 'application/json' });
+        navigator.sendBeacon(apiUrl(`/api/posts/${postId}/view`), body);
     } catch {
         // Sin conexión o no soportado; se ignora
     }

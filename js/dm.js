@@ -11,11 +11,26 @@ let messagePollInterval = null;
 let cryptoKeys = null;
 let keyPair = null;
 
-export async function initDMPage() {
+export async function initDMPage(session) {
+    currentUser = await resolveCurrentUser(session);
+    if (!currentUser) {
+        window.location.href = '/login';
+        return;
+    }
     await loadCryptoKeys();
     await loadConversations();
     setupEventListeners();
     startPolling();
+}
+
+async function resolveCurrentUser(session) {
+    if (session && session.authenticated && session.user) return session.user;
+    try {
+        const data = await api('/api/session', { method: 'GET' });
+        if (data && data.authenticated && data.user) return data.user;
+    } catch {
+    }
+    return null;
 }
 
 async function loadCryptoKeys() {
@@ -89,14 +104,13 @@ function base64ToArrayBuffer(base64) {
     return bytes.buffer;
 }
 
-async function deriveChatKey(otherPublicKeyB64) {
-    const otherPublicKey = await importPublicKey(otherPublicKeyB64);
-    const sharedSecret = await crypto.subtle.deriveBits(
-        { name: 'ECDH', public: otherPublicKey },
-        cryptoKeys.privateKey,
-        256
-    );
-    return crypto.subtle.importKey('raw', sharedSecret, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+// Lo que se guarda por conversacion es la clave AES-256 en crudo (32 bytes),
+// no una clave publica ECDH: importarla con ECDH P-256 lanzaba DataError
+// siempre. Se importa directamente como clave AES-GCM.
+async function deriveChatKey(chatKeyB64) {
+    const raw = base64ToArrayBuffer(chatKeyB64);
+    if (raw.byteLength !== 32) return null;
+    return crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, true, ['encrypt', 'decrypt']);
 }
 
 async function encryptMessage(chatKey, plaintext) {
@@ -376,9 +390,6 @@ async function storeChatKey(otherEmail) {
 
     if (keys[keyId]) return keys[keyId];
 
-    const otherPublicKey = await getUserPublicKey(otherEmail);
-    if (!otherPublicKey) return null;
-
     const chatKey = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
     const exported = await crypto.subtle.exportKey('raw', chatKey);
     const encryptedKey = arrayBufferToBase64(exported);
@@ -396,15 +407,6 @@ async function storeChatKey(otherEmail) {
     }
 
     return encryptedKey;
-}
-
-async function getUserPublicKey(email) {
-    try {
-        const data = await api('/api/site', { method: 'GET' });
-        return null;
-    } catch (e) {
-        return null;
-    }
 }
 
 function showKeyMissingWarning() {
@@ -636,5 +638,3 @@ function validateEmail(email) {
 window.addEventListener('beforeunload', () => {
     if (messagePollInterval) clearInterval(messagePollInterval);
 });
-
-export { initDMPage };

@@ -1,4 +1,4 @@
-import { buildCard, deletePost } from '/js/posts.js';
+import { buildCard } from '/js/posts.js';
 import { api, mediaUrl } from '/js/config.js?v=3';
 
 function renderAvatar(avatarEl, photo, name, size = 'large') {
@@ -81,15 +81,7 @@ export async function initPerfilPage() {
         }
     }
 
-    try {
-        const result = await api('/api/perfil');
-        renderProfile(result.profile || {}, result.posts || []);
-    } catch (err) {
-        if (statusEl) {
-            statusEl.textContent = err.message;
-            statusEl.className = 'posts-status error';
-        }
-    }
+    await reload();
 
     if (toggleEl) {
         toggleEl.addEventListener('click', () => {

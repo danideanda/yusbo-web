@@ -1,4 +1,4 @@
-import { api, apiUrl, mediaUrl } from '/js/config.js?v=3';
+import { api, mediaUrl } from '/js/config.js?v=3';
 
 const CATEGORY_LABELS = {
     ganado: 'Ganado',
@@ -6,12 +6,6 @@ const CATEGORY_LABELS = {
     herramientas: 'Herramientas',
     otros: 'Otros',
 };
-
-function showStatus(el, message, isError = true) {
-    if (!el) return;
-    el.textContent = message;
-    el.className = 'posts-status' + (isError ? ' error' : ' success');
-}
 
 function formatDate(ts) {
     if (!ts) return '';
@@ -31,7 +25,10 @@ export function buildCard(post, { mine = false, likeable = false } = {}) {
     const card = document.createElement('article');
     card.className = 'post-card';
 
-    const detailUrl = post.url || `/publicaciones/${post.id}`;
+    // El backend arma `url` con su propia base (yusbo-backend-us.vercel.app),
+    // donde no existe la ruta /publicaciones: ese enlace daria 404. Se usa
+    // siempre la ruta del frontend.
+    const detailUrl = `/publicaciones/${post.id}`;
 
     const top = document.createElement('div');
     top.className = 'post-top';
@@ -54,7 +51,9 @@ export function buildCard(post, { mine = false, likeable = false } = {}) {
 
     const desc = document.createElement('p');
     desc.className = 'post-desc';
-    desc.textContent = post.description;
+    // /api/recomendaciones no manda `description`; sin esto la tarjeta
+    // pintaba el texto literal "undefined".
+    desc.textContent = post.description || post.razon || '';
 
     const pieces = [top, title, desc];
 
@@ -113,11 +112,13 @@ export function buildCard(post, { mine = false, likeable = false } = {}) {
         btn.textContent = post.liked_by_me ? 'Me gusta' : 'Me gusta';
         btn.dataset.postId = post.id;
         btn.addEventListener('click', () => {
-            likePost(post.id, btn).then((liked) => {
-                if (liked !== null) {
-                    const statLabel = btn.closest('.post-card').querySelector('.post-stats');
-                    if (statLabel) statLabel.textContent = `♥ ${likes + (liked ? 1 : -1)} · 👁 ${views}`;
-                }
+            likePost(post.id, btn).then((result) => {
+                if (!result) return;
+                const total = typeof result.likes === 'number'
+                    ? result.likes
+                    : likes + (result.liked ? 1 : -1);
+                const statLabel = btn.closest('.post-card').querySelector('.post-stats');
+                if (statLabel) statLabel.textContent = `♥ ${total} · 👁 ${views}`;
             });
         });
         footer.append(btn);
@@ -156,7 +157,7 @@ export async function likePost(postId, btn) {
     try {
         const res = await api(`/api/posts/${postId}/like`, { method: 'POST', body: '{}' });
         btn.classList.toggle('liked', !!res.liked);
-        return !!res.liked;
+        return { liked: !!res.liked, likes: res.likes };
     } catch (err) {
         alert(err.message);
         return null;
@@ -164,6 +165,10 @@ export async function likePost(postId, btn) {
 }
 
 function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text == null ? '' : String(text);
+    return div.innerHTML;
+}
 
 export async function loadFeed() {
     const container = document.getElementById('feed-posts');
@@ -189,65 +194,10 @@ export async function loadFeed() {
     }
 }
 
-export async function loadMyPosts() {
-    const container = document.getElementById('my-posts');
-    const emptyEl = document.getElementById('my-posts-empty');
-    if (!container) return;
-    container.textContent = '';
-    try {
-        const data = await api('/api/myposts');
-        const posts = data.posts || [];
-        if (!posts.length) {
-            if (emptyEl) emptyEl.style.display = 'block';
-            return;
-        }
-        if (emptyEl) emptyEl.style.display = 'none';
-        posts.forEach((post) => container.append(buildCard(post, { mine: true })));
-    } catch (err) {
-        if (emptyEl) {
-            emptyEl.style.display = 'block';
-            emptyEl.querySelector('p').textContent = `Error al cargar: ${err.message}`;
-        }
-    }
-}
-
-export function initPostForm() {
-    const form = document.getElementById('post-form');
-    const statusEl = document.getElementById('post-status');
-    if (!form || !statusEl) return;
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(form).entries());
-        if (data.title.trim().length < 3) {
-            showStatus(statusEl, 'El título debe tener al menos 3 caracteres');
-            return;
-        }
-        if (data.description.trim().length < 10) {
-            showStatus(statusEl, 'La descripción debe tener al menos 10 caracteres');
-            return;
-        }
-        statusEl.className = 'posts-status';
-        statusEl.style.display = 'none';
-        try {
-            await api('/api/posts', {
-                method: 'POST',
-                body: JSON.stringify(data),
-            });
-            form.reset();
-            showStatus(statusEl, 'Publicación creada. ¡Ya está en el muro!', false);
-            loadMyPosts();
-        } catch (err) {
-            showStatus(statusEl, err.message);
-        }
-    });
-}
-
 export async function deletePost(postId) {
     if (!confirm('¿Seguro que quieres eliminar esta publicación?')) return;
     try {
         await api(`/api/posts/${postId}`, { method: 'DELETE' });
-        loadMyPosts();
         window.dispatchEvent(new CustomEvent('yusbo:post-deleted', { detail: { postId } }));
     } catch (err) {
         alert(err.message);

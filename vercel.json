@@ -38,6 +38,10 @@
       "destination": "/html/user.html"
     },
     {
+      "source": "/user/:id",
+      "destination": "/html/user.html"
+    },
+    {
       "source": "/perfil",
       "destination": "/html/perfil.html"
     },
@@ -78,16 +82,23 @@
       "destination": "/html/publicitar.html"
     },
     {
-      "source": "/info",
-      "destination": "/index.html"
-    },
-    {
       "source": "/sitemap.xml",
       "destination": "/sitemap-index.xml"
     },
     {
+      "source": "/404",
+      "destination": "/fails/404.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/html/$1"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/info",
+      "destination": "/",
+      "permanent": true
     }
   ],
   "headers": [

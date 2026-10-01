@@ -7,13 +7,14 @@ export async function initVerifyPage(session) {
     const resendEl = document.getElementById('verify-resend');
     const codeInput = document.getElementById('verify-code');
 
-    if (!session.authenticated) {
-        window.location.href = pageUrl('/login');
+    // Una cuenta ya verificada no tiene nada que hacer aqui.
+    if (session.authenticated && session.user && session.user.email_verified) {
+        window.location.href = pageUrl('/user');
         return;
     }
 
     if (emailEl) {
-        emailEl.textContent = session.user.email;
+        emailEl.textContent = (session.user && session.user.email) || session.email || '';
     }
 
     function showStatus(el, message, isError = true) {
@@ -46,7 +47,12 @@ export async function initVerifyPage(session) {
                     noticeEl.innerHTML = 'No pudimos enviar el correo (¿GMAIL_USER/GMAIL_APP_PASSWORD configurados?). Tu código es: <strong>' + data.code + '</strong>';
                 }
             }
-        } catch {
+        } catch (err) {
+            // Sin sesion pendiente ni de usuario no hay nada que verificar:
+            // se manda al login en vez de dejar un formulario que siempre falla.
+            if (err && (err.status === 401 || err.status === 403)) {
+                window.location.href = pageUrl('/login');
+            }
         }
     }
     loadFallbackCode();

@@ -9,6 +9,30 @@ export async function initConfigPage(session) {
 
     const form = document.getElementById('settings-form');
     const settingsStatus = document.getElementById('settings-status');
+    const logoutForm = document.getElementById('logout-form');
+
+    // El form nativo hace POST a /api/logout y aterriza en el JSON de la API.
+    // Ademas el CSRF solo viaja en la cookie httponly, que un form nativo no
+    // puede mandar como header. Con fetch se envia el header y se vuelve al
+    // sitio al terminar.
+    if (logoutForm) {
+        logoutForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = logoutForm.querySelector('button');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Cerrando sesion...';
+            }
+            try {
+                await api('/api/logout', { method: 'POST', body: '{}' });
+            } catch {
+                // Si falla, se reintenta con el submit nativo como salida.
+                logoutForm.submit();
+                return;
+            }
+            window.location.href = '/';
+        });
+    }
 
     if (nameEl) nameEl.textContent = session.user.name;
     if (emailEl) emailEl.textContent = session.user.email;
