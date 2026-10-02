@@ -13,8 +13,13 @@ export async function initVerifyPage(session) {
         return;
     }
 
+    // La sesion pendiente no incluye el correo en /api/session; auth.js lo deja
+    // en sessionStorage al registrar para poder mostrarlo aqui.
+    let pendingEmail = '';
+    try { pendingEmail = sessionStorage.getItem('yusbo_pending_email') || ''; } catch { /* sin almacenamiento */ }
+
     if (emailEl) {
-        emailEl.textContent = (session.user && session.user.email) || session.email || '';
+        emailEl.textContent = (session.user && session.user.email) || session.email || pendingEmail || '';
     }
 
     function showStatus(el, message, isError = true) {
@@ -69,6 +74,7 @@ export async function initVerifyPage(session) {
             statusEl.textContent = '';
             const result = await post('/api/verify', { code });
             if (result.ok && result.data.verified) {
+                try { sessionStorage.removeItem('yusbo_pending_email'); } catch { /* sin almacenamiento */ }
                 showStatus(statusEl, '¡Correo verificado! Redirigiendo...', false);
                 setTimeout(() => window.location.href = pageUrl(result.data.redirect || '/user'), 1200);
             } else if (result.error) {

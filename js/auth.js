@@ -63,6 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const result = await handleFormSubmit(registerForm, '/api/register');
         if (result.success) {
+            // La sesion pendiente no expone el correo en /api/session, asi que se
+            // lleva a /verify para poder mostrarlo en el aviso.
+            try { sessionStorage.setItem('yusbo_pending_email', email); } catch { /* sin almacenamiento */ }
             showStatus(statusEl, 'Cuenta creada exitosamente. Redirigiendo...', false);
             setTimeout(() => window.location.href = pageUrl(result.data.redirect || '/user'), 1000);
         } else {
