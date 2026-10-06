@@ -62,6 +62,12 @@ export function initAuthModal() {
 export async function requireAuth(actionCallback, message) {
     const data = await api('/api/session', { method: 'GET' });
     if (data && data.csrf_token) setCsrf(data.csrf_token);
+    // Registro pendiente de verificar: no es un "no logueado", es alguien a
+    // medio camino del alta. Mandarlo al login lo dejaría sin salida.
+    if (data.pending && !data.authenticated) {
+        window.location.href = pageUrl('/verify');
+        return false;
+    }
     if (data.authenticated) {
         return actionCallback();
     }
@@ -77,6 +83,11 @@ export function protectLinks(selector, message) {
         link.addEventListener('click', async (e) => {
             const data = await api('/api/session', { method: 'GET' });
             if (data && data.csrf_token) setCsrf(data.csrf_token);
+            if (data.pending && !data.authenticated) {
+                e.preventDefault();
+                window.location.href = pageUrl('/verify');
+                return;
+            }
             if (!data.authenticated) {
                 e.preventDefault();
                 const confirmed = await showAuthModal(message || 'Para acceder a esta función necesitas iniciar sesión.');

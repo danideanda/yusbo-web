@@ -153,8 +153,15 @@
     <script type="module">
 import '/js/cookies.js';
         import { initSessionCheck } from '/js/session.js';
-        import '/js/auth.js';
-        initSessionCheck();
+        import '/js/auth.js?v=2';
+        initSessionCheck().then((session) => {
+            // Un registro sin verificar todavia no es cuenta: entrar con
+            // credenciales daria "Credenciales inválidas", asi que se devuelve
+            // a /verify en vez de dejarlo atascado en el login.
+            if (session && session.pending && !session.authenticated) {
+                window.location.href = '/verify';
+            }
+        });
     </script>
 </body>
 </html>

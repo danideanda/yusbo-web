@@ -9,12 +9,12 @@ export async function initVerifyPage(session) {
 
     // Una cuenta ya verificada no tiene nada que hacer aqui.
     if (session.authenticated && session.user && session.user.email_verified) {
-        window.location.href = pageUrl('/user');
+        window.location.href = pageUrl(session.user.id ? '/user/' + session.user.id : '/user');
         return;
     }
 
-    // La sesion pendiente no incluye el correo en /api/session; auth.js lo deja
-    // en sessionStorage al registrar para poder mostrarlo aqui.
+    // /api/session ya expone el correo de la sesion pendiente; lo guardado en
+    // sessionStorage queda como respaldo para paginas cacheadas.
     let pendingEmail = '';
     try { pendingEmail = sessionStorage.getItem('yusbo_pending_email') || ''; } catch { /* sin almacenamiento */ }
 
@@ -55,8 +55,14 @@ export async function initVerifyPage(session) {
         } catch (err) {
             // Sin sesion pendiente ni de usuario no hay nada que verificar:
             // se manda al login en vez de dejar un formulario que siempre falla.
+            // Con sesion pendiente NO se sale: /login redirige de vuelta a
+            // /verify y se entraria en bucle sin completar el alta.
             if (err && (err.status === 401 || err.status === 403)) {
-                window.location.href = pageUrl('/login');
+                if (session.pending) {
+                    showStatus(statusEl, 'No pudimos recuperar el código. Pulsa "Reenviar código".');
+                } else {
+                    window.location.href = pageUrl('/login');
+                }
             }
         }
     }

@@ -1,5 +1,16 @@
 import { validateEmail, showStatus, handleFormSubmit, initTabs } from '/js/app.js?v=2';
-import { apiUrl, pageUrl } from '/js/config.js?v=3';
+import { apiUrl, pageUrl, api } from '/js/config.js?v=3';
+
+// Correo de la sesion pendiente (registro sin verificar) o cadena vacia.
+async function pendingVerificationEmail() {
+    try {
+        const session = await api('/api/session', { method: 'GET' });
+        if (session && session.pending && session.email) {
+            return String(session.email).toLowerCase();
+        }
+    } catch { /* sin sesion */ }
+    return '';
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     initTabs('.auth-tab', '.auth-form', '#auth-status');
@@ -28,6 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => window.location.href = pageUrl(result.data.redirect || '/user'), 1000);
         } else {
             showStatus(statusEl, result.error);
+            // La cuenta de un registro pendiente todavia no existe: el backend
+            // responde "Credenciales inválidas" aunque la contraseña sea la
+            // correcta. Se avisa y se enlaza a /verify para no dejar al usuario
+            // reintentando (5 fallos = bloqueo de 15 min).
+            if (result.error === 'Credenciales inválidas' &&
+                (await pendingVerificationEmail()) === email.toLowerCase()) {
+                statusEl.className = 'auth-status error';
+                statusEl.textContent = 'Tu cuenta está pendiente de verificación. ';
+                const link = document.createElement('a');
+                link.href = pageUrl('/verify');
+                link.textContent = 'Verificar ahora';
+                statusEl.appendChild(link);
+            }
         }
     });
 
