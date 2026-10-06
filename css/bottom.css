@@ -115,15 +115,35 @@ body.has-bottom-nav {
 
 @media (max-width: 480px) {
     .bottom-nav {
-        gap: 1.2rem;
+        gap: .8rem;
+        padding-left: 3vw;
+        padding-right: 3vw;
     }
     .bn-item {
-        min-width: 58px;
+        min-width: 50px;
+        padding: 4px 2px;
     }
     .bn-label {
-        font-size: .66rem;
+        font-size: .62rem;
+        letter-spacing: .4px;
     }
     body.has-bottom-nav {
         padding-bottom: 86px;
+    }
+}
+
+/* Pantallas muy angostas: 5 items no caben con la separacion habitual. */
+@media (max-width: 360px) {
+    .bottom-nav {
+        gap: .4rem;
+        padding-left: 2vw;
+        padding-right: 2vw;
+    }
+    .bn-item {
+        min-width: 46px;
+    }
+    .bn-label {
+        font-size: .58rem;
+        letter-spacing: .2px;
     }
 }

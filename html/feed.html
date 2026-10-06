@@ -27,7 +27,7 @@
     <base href="/">
     <link rel="stylesheet" href="css/app.css?v=7">
     <link rel="stylesheet" href="css/posts.css?v=3">
-    <link rel="stylesheet" href="css/bottom.css">
+    <link rel="stylesheet" href="css/bottom.css?v=2">
 </head>
 <body>
 
@@ -113,7 +113,7 @@
 import '/js/cookies.js';
         import { initSessionCheck, updateLoginButton } from '/js/session.js';
         import { loadFeed } from '/js/posts.js';
-        import { initBottomNav } from '/js/bottom.js';
+        import { initBottomNav } from '/js/bottom.js?v=2';
 
         initSessionCheck().then((session) => {
             updateLoginButton(session.authenticated, session.user?.name || '');

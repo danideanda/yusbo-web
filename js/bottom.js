@@ -5,12 +5,18 @@ const ICONS = {
         '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3 4 10v10a1 1 0 0 0 1 1h5v-6h4v6h5a1 1 0 0 0 1-1V10z"/></svg>',
     messages:
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+    publicar:
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>',
+    dm:
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
 };
 
 const ITEMS = [
+    { id: 'publicar', label: 'Publicar', href: '/publicar', icon: 'publicar' },
     { id: 'config', label: 'Configuración', href: '/configuracion', icon: 'config' },
     { id: 'home', label: 'Publicaciones', href: '/publicaciones', icon: 'home', central: true },
     { id: 'messages', label: 'Mensajes', href: '/mensajes', icon: 'messages' },
+    { id: 'dm', label: 'Directos', href: '/dm', icon: 'dm' },
 ];
 
 let rendered = false;
