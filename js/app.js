@@ -1,4 +1,5 @@
 import { api, setCsrf } from '/js/config.js?v=3';
+import { guardRepeatedSubmit } from '/js/submit-guard.mjs?v=2';
 
 export function validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -39,6 +40,10 @@ function toFormBody(formData) {
 }
 
 export async function handleFormSubmit(form, url, successRedirect) {
+    if (!guardRepeatedSubmit(form, 1000)) {
+        return { success: false, error: 'Espera 1 segundo antes de enviar de nuevo.' };
+    }
+
     const formData = new FormData(form);
     const data = toFormBody(formData);
 
