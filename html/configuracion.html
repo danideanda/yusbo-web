@@ -163,12 +163,11 @@
     <script type="module">
 import '/js/cookies.js';
         import { initSessionCheck, updateLoginButton } from '/js/session.js';
-        import { initBottomNav } from '/js/bottom.js?v=2';
+        import '/js/bottom.js?v=3';
         import { initConfigPage } from '/js/configuracion.js';
 
         async function initPage() {
             const session = await initSessionCheck();
-            initBottomNav(session.authenticated);
             if (!session.authenticated) {
                 window.location.href = '/login';
                 return;

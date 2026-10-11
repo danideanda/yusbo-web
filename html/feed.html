@@ -113,11 +113,10 @@
 import '/js/cookies.js';
         import { initSessionCheck, updateLoginButton } from '/js/session.js';
         import { loadFeed } from '/js/posts.js';
-        import { initBottomNav } from '/js/bottom.js?v=2';
+        import '/js/bottom.js?v=3';
 
         initSessionCheck().then((session) => {
             updateLoginButton(session.authenticated, session.user?.name || '');
-            initBottomNav(session.authenticated);
         });
         loadFeed();
     </script>

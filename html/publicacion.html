@@ -93,12 +93,11 @@
     <script type="module">
     import '/js/cookies.js';
 import { initSessionCheck, updateLoginButton } from '/js/session.js';
-        import { initBottomNav } from '/js/bottom.js?v=2';
+        import '/js/bottom.js?v=3';
         import '/js/publicacion.js';
 
         initSessionCheck().then((session) => {
             updateLoginButton(session.authenticated, session.user?.name || '');
-            initBottomNav(session.authenticated);
         });
     </script>
 </body>

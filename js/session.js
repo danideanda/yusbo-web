@@ -1,13 +1,63 @@
 import { api, setCsrf, mediaUrl } from '/js/config.js?v=3';
 
-export async function checkSession() {
+const CACHE_KEY = 'yusbo_session_cache';
+const RETRY_DELAY_MS = 400;
+
+function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Ultimo estado de sesion conocido en esta pestaña. Solo guarda datos de
+// display (nombre, foto, id): el cookie de sesion sigue siendo la fuente de
+// verdad y el CSRF nunca se cachea.
+function cacheSession(data) {
     try {
-        const data = await api('/api/session', { method: 'GET' });
-        if (data) setCsrf(data.csrf_token);
-        return data;
+        if (!data || data.pending || !data.authenticated) {
+            sessionStorage.removeItem(CACHE_KEY);
+            return;
+        }
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+            authenticated: true,
+            user: data.user || null,
+        }));
+    } catch { /* almacenamiento no disponible */ }
+}
+
+function readCachedSession() {
+    try {
+        const raw = sessionStorage.getItem(CACHE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        return data && data.authenticated ? data : null;
     } catch {
-        return { authenticated: false };
+        return null;
     }
+}
+
+export async function checkSession() {
+    for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+            const data = await api('/api/session', { method: 'GET' });
+            if (data) setCsrf(data.csrf_token);
+            cacheSession(data);
+            return data;
+        } catch (err) {
+            // api() solo lanza ante fallo de red o respuesta 5xx: un servidor
+            // caido o un error transitorio no significa que la sesion termino.
+            // Antes cualquier fallo devolvia authenticated:false y las paginas
+            // redirigian a /login, dando la sensacion de "cerrar sesion" al
+            // cambiar de panel.
+            if (err && err.status && err.status < 500) {
+                const closed = { authenticated: false };
+                cacheSession(closed);
+                return closed;
+            }
+            if (attempt === 0) await delay(RETRY_DELAY_MS);
+        }
+    }
+    // Sin respuesta utilizable: se conserva el ultimo estado conocido para no
+    // expulsar a alguien cuya cookie sigue vigente.
+    return readCachedSession() || { authenticated: false, unavailable: true };
 }
 
 export function updateLoginButton(authenticated, userName = '', photo = '') {
