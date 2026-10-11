@@ -19,39 +19,73 @@ const ITEMS = [
     { id: 'dm', label: 'Directos', href: '/dm', icon: 'dm' },
 ];
 
-let rendered = false;
+// Secciones internas de la app. Las páginas públicas (landing, login,
+// soporte, terminos...) no llevan barra inferior.
+const APP_ROUTES = [
+    '/publicaciones',
+    '/publicar',
+    '/mensajes',
+    '/dm',
+    '/configuracion',
+    '/perfil',
+    '/user',
+];
+
+function normalizePath(pathname) {
+    const path = (pathname || '/').split('?')[0].split('#')[0];
+    return path.replace(/\/+$/, '') || '/';
+}
+
+function isAppRoute(pathname = window.location.pathname) {
+    const path = normalizePath(pathname);
+    return APP_ROUTES.some((route) => path === route || path.startsWith(route + '/'));
+}
+
+function isActivePath(pathname, href) {
+    const path = normalizePath(pathname);
+    return path === href || path.startsWith(href + '/');
+}
+
 let currentNav = null;
 
-export function initBottomNav(show = true) {
-    if (rendered) {
-        if (currentNav) {
-            currentNav.style.display = show ? 'flex' : 'none';
-            document.body.classList.toggle('has-bottom-nav', show);
-        }
-        return;
-    }
-    rendered = true;
-
-    const nav = document.createElement('nav');
-    nav.className = 'bottom-nav';
-    nav.setAttribute('aria-label', 'Navegación principal');
+function renderItems(nav) {
+    const pathname = window.location.pathname;
     nav.innerHTML = ITEMS.map((item) => {
-        const active = window.location.pathname === item.href;
+        const active = isActivePath(pathname, item.href);
         return (
-            `<a href="${item.href}" class="bn-item${item.central ? ' bn-central' : ''}${active ? ' active' : ''}" aria-label="${item.label}" title="${item.label}">` +
+            `<a href="${item.href}" class="bn-item${item.central ? ' bn-central' : ''}${active ? ' active' : ''}" aria-label="${item.label}" title="${item.label}"${active ? ' aria-current="page"' : ''}>` +
             `<span class="bn-icon">${ICONS[item.icon]}</span>` +
             `<span class="bn-label">${item.label}</span>` +
             `</a>`
         );
     }).join('');
-    document.body.appendChild(nav);
-    currentNav = nav;
+}
+
+function setVisible(nav, show) {
     nav.style.display = show ? 'flex' : 'none';
     document.body.classList.toggle('has-bottom-nav', show);
 }
 
+// Se pinta en cuanto se importa el modulo, sin esperar /api/session:
+// antes la barra no existia hasta que la sesion respondia, y si la peticion
+// fallaba (o tardaba) desaparecia al cambiar de ruta.
+export function initBottomNav(show) {
+    if (!currentNav || !currentNav.isConnected) {
+        const nav = document.createElement('nav');
+        nav.className = 'bottom-nav';
+        nav.setAttribute('aria-label', 'Navegación principal');
+        renderItems(nav);
+        document.body.appendChild(nav);
+        currentNav = nav;
+    }
+    renderItems(currentNav);
+    const visible = typeof show === 'boolean' ? show : isAppRoute();
+    setVisible(currentNav, visible);
+}
+
 export function showBottomNav(show) {
     if (!currentNav) return;
-    currentNav.style.display = show ? 'flex' : 'none';
-    document.body.classList.toggle('has-bottom-nav', show);
+    setVisible(currentNav, show);
 }
+
+initBottomNav();

@@ -203,3 +203,43 @@ export async function deletePost(postId) {
         alert(err.message);
     }
 }
+
+// /api/myposts solo devuelve anuncios del usuario de la sesion: el panel
+// nunca muestra publicaciones de otros usuarios.
+let myPostsRefreshBound = false;
+
+export async function loadMyPosts() {
+    const container = document.getElementById('user-posts');
+    const loadingEl = document.getElementById('user-loading');
+    const emptyEl = document.getElementById('user-empty');
+    const errorEl = document.getElementById('user-error');
+    if (!container) return;
+
+    if (!myPostsRefreshBound) {
+        myPostsRefreshBound = true;
+        window.addEventListener('yusbo:post-deleted', () => loadMyPosts());
+    }
+
+    if (loadingEl) loadingEl.style.display = 'block';
+    if (emptyEl) emptyEl.style.display = 'none';
+    if (errorEl) errorEl.style.display = 'none';
+
+    try {
+        const data = await api('/api/myposts');
+        if (loadingEl) loadingEl.style.display = 'none';
+        const posts = data.posts || [];
+        container.textContent = '';
+        if (!posts.length) {
+            if (emptyEl) emptyEl.style.display = 'block';
+            return;
+        }
+        posts.forEach((post) => container.append(buildCard(post, { mine: true })));
+    } catch (err) {
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (errorEl) {
+            errorEl.style.display = 'block';
+            const msg = document.getElementById('user-error-msg');
+            if (msg) msg.textContent = err.message;
+        }
+    }
+}

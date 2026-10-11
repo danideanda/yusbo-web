@@ -44,28 +44,28 @@
         <section class="section user-header">
             <h1>YUS<span>BO</span></h1>
             <p class="lead">Tu panel</p>
-            <p class="desc">Bienvenido, <strong id="user-name-display"></strong>. Aquí verás las publicaciones recomendadas para ti.</p>
+            <p class="desc">Bienvenido, <strong id="user-name-display"></strong>. Aquí ves tus anuncios publicados en YUSBO.</p>
         </section>
 
         <section class="section rec-section">
-            <h2>Recomendado para ti</h2>
-            <p class="section-desc">Publicaciones seleccionadas por el algoritmo de YUSBO según tus intereses.</p>
+            <h2>Mis publicaciones</h2>
+            <p class="section-desc">Solo tus anuncios. Puedes eliminar los que ya no quieras mostrar.</p>
 
-            <div class="posts-grid" id="rec-posts"></div>
+            <div class="posts-grid" id="user-posts"></div>
 
-            <div id="rec-loading" class="empty-state">
-                <p>Cargando recomendaciones...</p>
+            <div id="user-loading" class="empty-state">
+                <p>Cargando tus publicaciones...</p>
             </div>
 
-            <div id="rec-empty" class="empty-state" style="display: none;">
-                <h3>Sé el primero en publicar aquí</h3>
-                <p>Todavía no hay publicaciones en YUSBO. Comparte lo que ofreces o buscas: ganado, maíz, herramientas y más.</p>
+            <div id="user-empty" class="empty-state" style="display: none;">
+                <h3>Todavía no has publicado</h3>
+                <p>Comparte lo que ofreces o buscas: ganado, maíz, herramientas y más.</p>
                 <a href="/publicar" class="btn btn-primary">Ir a publicar</a>
             </div>
 
-            <div id="rec-error" class="empty-state" style="display: none;">
-                <h3>No se pudieron cargar las recomendaciones</h3>
-                <p id="rec-error-msg"></p>
+            <div id="user-error" class="empty-state" style="display: none;">
+                <h3>No se pudieron cargar tus publicaciones</h3>
+                <p id="user-error-msg"></p>
                 <button class="btn btn-outline" onclick="window.location.reload()">Reintentar</button>
             </div>
         </section>
@@ -102,18 +102,25 @@
     <script type="module">
 import '/js/cookies.js';
         import { initSessionCheck } from '/js/session.js';
-        import { loadRecommendations } from '/js/recomendaciones.js';
-        import { initBottomNav } from '/js/bottom.js?v=2';
+        import { loadMyPosts } from '/js/posts.js';
+        import '/js/bottom.js?v=3';
 
         async function initUserPage() {
             const session = await initSessionCheck();
-            initBottomNav(session.authenticated);
-            if (session.authenticated && session.user) {
-                document.getElementById('user-name-display').textContent = session.user.name;
-                loadRecommendations();
-            } else {
+            if (!session.authenticated) {
                 window.location.href = '/login';
+                return;
             }
+            // /user/:id solo acepta el id del propio usuario: el backend no
+            // expone perfiles de terceros, asi que cualquier otro id manda al
+            // panel propio para no mezclar datos de otros usuarios.
+            const match = window.location.pathname.match(/^\/user\/([^/]+)\/?$/);
+            if (match && match[1] !== session.user.id) {
+                window.location.replace('/user');
+                return;
+            }
+            document.getElementById('user-name-display').textContent = session.user.name;
+            loadMyPosts();
         }
         initUserPage();
     </script>
